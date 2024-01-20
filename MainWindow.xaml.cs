@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿// Arman Sahota
+// Assignment: Lond Underground Communt
+// 01/20/2024
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -20,9 +23,9 @@ namespace Assignment_London_Underground_Ticketing_System
         // Replace "WillsList" with your Custom List name in 2 places.
         // 1. Replace here
         // Example YourList<Ride> Riders
-        public WillsList<Rider> Riders;
+        public ArmansList<Rider> Riders;
 
-        int numberOfRiders = 10; // Changes this to something higher than 100 to check your list is working
+        int numberOfRiders = 102; // Changes this to something higher than 100 to check your list is working
 
         public MainWindow()
         {
@@ -36,9 +39,13 @@ namespace Assignment_London_Underground_Ticketing_System
 
         private void OnSearchStation(object sender, RoutedEventArgs e)
         {
-            var searchStation = cmbSearchStation.SelectedIndex;
+            var searchStation = (Station)cmbSearchStation.SelectedItem;
 
-            // Enter code here to show all riders who started there ride from the selected station
+            if (searchStation != null)
+            {
+                var ridersFromStation = Riders.Where(rider => rider.StationOn == searchStation).ToList();
+                lvRiders.ItemsSource = ridersFromStation;
+            }
 
             // lvRiders.ItemsSource = YourReturnedResults;
         } // OnSearchStation
@@ -46,7 +53,8 @@ namespace Assignment_London_Underground_Ticketing_System
         private void OnShowActive(object sender, RoutedEventArgs e)
         {
             // Enter code here to display all riders currently riding the underground
-
+            var activeRiders = Riders.Where(rider => rider.IsActive).ToList();
+            lvRiders.ItemsSource = activeRiders;
             // lvRiders.ItemsSource = YourReturnedResults;
         } // OnShowActive
 
@@ -59,7 +67,7 @@ namespace Assignment_London_Underground_Ticketing_System
         {
             // 2. And here
             // Ex Riders = new YourList<Rider>();
-            Riders = new WillsList<Rider>();
+            Riders = new ArmansList<Rider>();
             Random rnd = new Random();
             HashSet<int> usedNumbers = new HashSet<int>();
 
